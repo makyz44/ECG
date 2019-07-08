@@ -4,11 +4,14 @@ import fil
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+import time
 
 odseceni_negativni=[]
 apsolutni=[]
 
 print("Testiranje...")
+
+a=time.time()
 
 filtriran_signal=fil.butter_highpass_filter(EKG.signal, 0.5, 360)
 
@@ -76,6 +79,7 @@ print(ref)
 print(mx)
 
 print("Testiranje zavrseno.")
+print(time.time()-a)
 
 plt.plot(EKG.signal)
 plt.plot(prozor_za_odlucivanje)
