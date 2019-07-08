@@ -8,6 +8,7 @@ import math
 odseceni_negativni=[]
 apsolutni=[]
 
+print("Testiranje...")
 
 filtriran_signal=fil.butter_highpass_filter(EKG.signal, 0.5, 360)
 
@@ -53,20 +54,28 @@ def odluka(signal):
 prozor_za_odlucivanje=odluka(running_signal)
 
 nizind=[]
+mx=[]
+for p in range(0,300):
+    for i in range(len(prozor_za_odlucivanje)):
+        if prozor_za_odlucivanje[i]==1:
+            nizind.append(i+p)
+    test=EKG.rr
+    b=0
+    for i in range(len(test)):
+        for j in range(len(nizind)):
+            if test[i]==nizind[j] or test[i]==nizind[j]+1 or test[i]==nizind[j]-1:
+                b=b+1
+    mx.append(b*100/len(test))
 
-for i in range(len(prozor_za_odlucivanje)):
-    if prozor_za_odlucivanje[i]==1:
-        nizind.append(i+119)
+ref=0
+for i in range(len(mx)):
+    if mx[i]>ref and mx[i]<=100:
+        ref=mx[i]
 
-test=EKG.rr
+print(ref)
+print(mx)
 
-b=0
-for i in range(len(test)):
-    for j in range(len(nizind)):
-        if test[i]==nizind[j] or test[i]==nizind[j]+1 or test[i]==nizind[j]-1:
-            b=b+1
-
-print(b*100/len(test))
+print("Testiranje zavrseno.")
 
 plt.plot(EKG.signal)
 plt.plot(prozor_za_odlucivanje)
