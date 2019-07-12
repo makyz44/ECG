@@ -16,22 +16,21 @@ import time
 #nizindexa3=[]
 #ns=[]
 #opt=[]
-ukupno=0
 
-def tacnost(rezultat, dataset):
-    b=0
-    for i in range(len(dataset)):
-        for j in range(len(rezultat)):
-            if dataset[i]==rezultat[j] or dataset[i]==rezultat[j]-1 or dataset[i]==rezultat[j]+1:
-                b=b+1
-    acc=(b*100/len(dataset))
-    return acc
+def trecialg(freq, k):
+    def tacnost(rezultat, dataset):
+        b=0
+        for i in range(len(dataset)):
+            for j in range(len(rezultat)):
+                if dataset[i]==rezultat[j] or dataset[i]==rezultat[j]-1 or dataset[i]==rezultat[j]+1:
+                    b=b+1
+        acc=(b*100/len(dataset))
+        return acc
 
-def get_sec(time_str):
-    m, s = time_str.split(':')
-    return int(m) * 60 + float(s)
+    def get_sec(time_str):
+        m, s = time_str.split(':')
+        return int(m) * 60 + float(s)
 
-for k in range(1, 49):
     kvadriran=[]
     posleizvoda=[]
     rr=[]
@@ -56,7 +55,7 @@ for k in range(1, 49):
 
     rr = [round(x) for x in rr]
 
-    filtriran_signal=fil.butter_highpass_filter(signal, 0.5, 360)
+    filtriran_signal=fil.butter_highpass_filter(signal, freq, 360)
 
     kvadriran = list(np.array(filtriran_signal)**2)
 
@@ -106,12 +105,7 @@ for k in range(1, 49):
     for i in range(len(naj)):
         if naj[i]>mxnaj:
             mxnaj=naj[i]
-    print(k)
-    print(mxnaj)
-    ukupno=ukupno+mxnaj
-
-print("Ukupno")
-print(ukupno/48)
+    return mxnaj
 
 
 
