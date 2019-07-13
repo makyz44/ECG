@@ -12,6 +12,17 @@ refmax=[]
 binar=[]
 nizind=[]
 
+def autocorr(x) :
+    """
+    Compute the autocorrelation of the signal, based on the properties of the
+    power spectral density of the signal.
+    """
+    xp = x-np.mean(x)
+    f = np.fft.fft(xp)
+    p = np.array([np.real(v)**2+np.imag(v)**2 for v in f])
+    pi = np.fft.ifft(p)
+    return np.real(pi)[:x.size/2]/np.sum(xp**2)
+
 def sumlist(list):                      #suma liste
     s=0
     for i in range(len(list)):
@@ -122,8 +133,10 @@ gres=[]
 for i in range(100,len(filtriran_signal2)-100):
     suma=0
     for j in range(0, 200):
-        suma=suma+abs(filtriran_signal2[i+j-100]-refmax[j])/200
+        suma=suma+abs(filtriran_signal2[i+j-100]-refmax[j])
     gres.append(suma)
+
+auto=autocorr(filtriran_signal2)
     
 
 b=0
@@ -134,6 +147,6 @@ for i in range(len(rr)):
 
 print(b*100/len(rr))
 
-plt.plot(gres)
+plt.plot(auto)
 plt.plot(binar)
 plt.show()
