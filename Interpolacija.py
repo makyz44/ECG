@@ -13,13 +13,22 @@ def get_sec(time_str):
     m, s = time_str.split(':')
     return int(m) * 60 + float(s)
 
+def greska(signal):
+    min=100
+    for i in range(len(signal)):
+        if signal[i]<min:
+            min=signal[i]
+    suma=0
+    for i in range(len(signal)):
+        suma=suma+(abs(signal[i]-min))
+    return suma
 
-with open("C:\\Users\\Pc\\Desktop\\Peak\\p"+str(1)+".txt") as file:
+with open("C:\\Users\\Pc\\Desktop\\Peak\\p"+str(23)+".txt") as file:
     for line in file: 
         #line = line.strip() #or some other preprocessing
         rr.append(get_sec(line)) #storing everything in memory!
 
-with open("C:\\Users\\Pc\\Desktop\\Sample\\s"+str(1)+".txt") as file:
+with open("C:\\Users\\Pc\\Desktop\\Sample\\s"+str(23)+".txt") as file:
     for line in file: 
         line = line.strip() #or some other preprocessing
         signal.append(float(line)) #storing everything in memory!
@@ -40,9 +49,8 @@ sortirani=sorted(maximumi)
 
 #print(sortirani)
 
-n=100
-
 mojevrednostimax=[]
+n=70
 for i in range(0, n+1):
     mojevrednostimax.append(sortirani[len(sortirani)-i-1])
 
@@ -72,10 +80,14 @@ s = interpolate.InterpolatedUnivariateSpline(x, y)
 xx = np.linspace(min(x),max(x))
 yy = s(xx)
 
+print(len(rr))
+
 plt.plot(yy)
 
-#plt.figure()
-#plt.plot(filtriran_signal2)
-#plt.plot(x, y, 'ro', xx, yy)
-#plt.axis([min(xx)-d, max(xx)+d, min(yy)-d, max(yy)+d])
+plt.figure()
+plt.plot(filtriran_signal2)
+plt.plot(x, y, 'ro', xx, yy)
+plt.axis([min(xx)-d, max(xx)+d, min(yy)-d, max(yy)+d])
 plt.show()
+
+
