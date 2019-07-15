@@ -19,7 +19,8 @@ def greska(signal):
     for i in range(len(signal)):
         suma=suma+(abs(signal[i]-min))
     return suma
-koef=[]
+
+ukupno=0
 for k in range(1, 49):
     signal=[]
     rr=[]
@@ -95,16 +96,67 @@ for k in range(1, 49):
     izvodgreske=[]
     for i in range(len(greske)-1):
         izvodgreske.append(greske[i+1]-greske[i])
-#    plt.plot(greske)
-#    plt.plot(izvodgreske)
     mx=0
     mxi=0
     for i in range(len(izvodgreske)):
         if abs(izvodgreske[i])>mx:
             mx=izvodgreske[i]
-            mxi=i+20
+            mxi=i+22
+
+    maximumi=[]
+    for i in range(1, len(filtriran_signal2)-1):
+        if filtriran_signal2[i]>filtriran_signal2[i+1] and filtriran_signal2[i]>filtriran_signal2[i-1]:
+            maximumi.append(filtriran_signal2[i])
+    sortirani=sorted(maximumi)
+
+    mojevrednostimax=[]
+    for i in range(0, mxi+1):
+        mojevrednostimax.append(sortirani[len(sortirani)-i-1])
+    minimalnimax=min(mojevrednostimax)
+    trsh=minimalnimax
+
+    mojiindexi=[]
+    for i in range(1, len(filtriran_signal2)-1):
+        if filtriran_signal2[i]>trsh*0.5 and filtriran_signal2[i]>filtriran_signal2[i+1] and filtriran_signal2[i]>filtriran_signal2[i-1]:
+            mojiindexi.append(i)
+
+    #print(mojiindexi)
+    #print(rr)
+    konind=[]
+    for i in range(len(mojiindexi)):
+        mxv1=-5
+        mxv2=-5
+        mxv3=-5
+        mxvi1=0
+        mxvi2=0
+        mxvi3=0
+        if mojiindexi[i]>75 and mojiindexi[i]<21525:
+            for j in range(mojiindexi[i]-75, mojiindexi[i]+75):
+                if filtriran_signal2[j]>filtriran_signal2[j-1] and filtriran_signal2[j]>filtriran_signal2[j+1] and filtriran_signal2[j]>mxv1:
+                    mxv1=filtriran_signal2[j]
+                    mxvi1=j
+            for j in range(mojiindexi[i]-75, mojiindexi[i]+75):
+                if filtriran_signal2[j]>filtriran_signal2[j-1] and filtriran_signal2[j]>filtriran_signal2[j+1] and filtriran_signal2[j]>mxv2 and filtriran_signal2[j]<mxv1:
+                    mxv2=filtriran_signal2[j]
+                    mxvi2=j
+            for j in range(mojiindexi[i]-75, mojiindexi[i]+75):
+                if filtriran_signal2[j]>filtriran_signal2[j-1] and filtriran_signal2[j]>filtriran_signal2[j+1] and filtriran_signal2[j]>mxv3 and filtriran_signal2[j]<mxv2:
+                    mxv3=filtriran_signal2[j]
+                    mxvi3=j
+        f=[mxvi1, mxvi2, mxvi3]
+        f=sorted(f)
+        mxf=0
+        for j in range(len(f)):
+            if f[j]>mxf:
+                mxf=f[j]
+        konind.append(mxf)
+    konind=list(dict.fromkeys(konind))
+    b=0
+    for i in range(len(rr)):
+        for j in range(len(konind)):
+            if rr[i]==konind[j] or rr[i]==konind[j]-1 or rr[i]==konind[j]+1:
+                b=b+1
     print(k)
-    print(mxi/len(rr))
-    koef.append(mxi/len(rr))
-print(koef)
-#plt.show()
+    print(b*100/len(rr))
+    ukupno=ukupno+(b*100/len(rr))
+print(ukupno/48)
