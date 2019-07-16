@@ -101,11 +101,6 @@ for k in range(1, 49):
             mx=filtriran_signal2[i]
             inm=i
 
-    refmax=[]
-    for i in range(inm-100,inm+100):
-        refmax.append(filtriran_signal2[i])
-
-
     for i in range(1, len(filtriran_signal2)-1):
         if abs(filtriran_signal2[i-1])<abs(filtriran_signal2[i]) and abs(filtriran_signal2[i+1])<abs(filtriran_signal2[i]) and abs(filtriran_signal2[i])>=0.4*mx:
             binar.append(1)
@@ -117,52 +112,35 @@ for k in range(1, 49):
         if binar[i]==1:
             nizindexa.append(i)
 
-    gres=[]
-    for i in range(100,len(filtriran_signal2)-100):
-        suma=0
-        for j in range(0, 200):
-            suma=suma+abs(filtriran_signal2[i+j-100]-refmax[j])
-        gres.append(suma)
-
     listaindexa=[]
     for i in range(len(nizindexa)):
-        if nizindexa[i]>50 and nizindexa[i]<21550:
-            mx1=0
-            mx1i=0
-            for j in range(nizindexa[i]-48, nizindexa[i]+48):
-                if abs(filtriran_signal2[j])>abs(filtriran_signal2[j-1]) and abs(filtriran_signal2[j])>abs(filtriran_signal2[j+1]) and abs(filtriran_signal2[j])>mx1:
-                    mx1=filtriran_signal2[j]
-                    mx1i=j
-            mx2=0
-            mx2i=0
-            for j in range(nizindexa[i]-48, nizindexa[i]+48):
-                if abs(filtriran_signal2[j])>abs(filtriran_signal2[j-1]) and abs(filtriran_signal2[j])>abs(filtriran_signal2[j+1]) and abs(filtriran_signal2[j])>mx2 and filtriran_signal2[j]<mx1:
-                    mx2=filtriran_signal2[j]
-                    mx2i=j
-            mx3=0
-            mx3i=0
-            for j in range(nizindexa[i]-48, nizindexa[i]+48):
-                if abs(filtriran_signal2[j])>abs(filtriran_signal2[j-1]) and abs(filtriran_signal2[j])>abs(filtriran_signal2[j+1]) and abs(filtriran_signal2[j])>mx3 and filtriran_signal2[j]<mx2:
-                    mx3=filtriran_signal2[j]
-                    mx3i=j
-            mm=0
-            mi=0
-            if mx3>mx2:
-                if mx3>mx1:
-                    mm=mx3
-                    mi=mx3i
-                else:
-                    mm=mx1
-                    mi=mx1i
-            else:
-                if mx2>mx1:
-                    mm=mx2
-                    mi=mx2i
-                else:
-                    mm=mx1
-                    mi=mx1i
-            listaindexa.append(mi)
-
+        w=75
+        mxv1=-5
+        mxv2=-5
+        mxv3=-5
+        mxvi1=0
+        mxvi2=0
+        mxvi3=0
+        if nizindexa[i]>w and nizindexa[i]<len(filtriran_signal2)-w:
+            for j in range(nizindexa[i]-w, nizindexa[i]+w):
+                if filtriran_signal2[j]>filtriran_signal2[j-1] and filtriran_signal2[j]>filtriran_signal2[j+1] and filtriran_signal2[j]>mxv1:
+                    mxv1=filtriran_signal2[j]
+                    mxvi1=j
+            for j in range(nizindexa[i]-w, nizindexa[i]+w):
+                if filtriran_signal2[j]>filtriran_signal2[j-1] and filtriran_signal2[j]>filtriran_signal2[j+1] and filtriran_signal2[j]>mxv2 and filtriran_signal2[j]<mxv1:
+                    mxv2=filtriran_signal2[j]
+                    mxvi2=j
+            for j in range(nizindexa[i]-w, nizindexa[i]+w):
+                if filtriran_signal2[j]>filtriran_signal2[j-1] and filtriran_signal2[j]>filtriran_signal2[j+1] and filtriran_signal2[j]>mxv3 and filtriran_signal2[j]<mxv2:
+                    mxv3=filtriran_signal2[j]
+                    mxvi3=j
+            f=[mxvi1, mxvi2, mxvi3]
+            mxf=-1
+            for j in range(len(f)):
+                if f[j]>mxf:
+                    mxv=f[j]
+        listaindexa.append(mxvi1)
+    listaindexa=list(dict.fromkeys(listaindexa))
     b=0
     for i in range(len(rr)):
         for j in range(len(listaindexa)):
